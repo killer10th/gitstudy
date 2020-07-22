@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.koreait.pro.dao.ProductDAO">
+
+	<!-- 상품 등록 -->
+	<insert id="productInsert">
+		INSERT INTO PRODUCT VALUES (PRODUCT_SEQ.NEXTVAL, #{param1}, NULL, #{param2}, #{param3}, #{param4}, #{param5}, #{param6}, SYSDATE, 0, 1)
+	</insert>
+
+	<!-- 메인페이지에 판매하는 상품 리스트 출력 -->
+	<select id="selectProductList"  resultType="com.koreait.pro.dto.ProductDTO">
+		SELECT *
+		FROM PRODUCT
+		WHERE P_STATE=1
+	</select>
+	
+	<!-- 이미지 클릭시 상품 정보 보기 -->
+	<select id="selectProductByNo" resultType="com.koreait.pro.dto.ProductDTO">
+		SELECT *
+		FROM PRODUCT 
+		WHERE P_NO = #{p_No}
+	</select>
+	
+	<!-- 구매 후 관리자 승인대기 -->
+    <update id="ProductUpdateState">
+       UPDATE PRODUCT
+       SET P_STATE = 2, B_NO = #{param1}
+       WHERE P_NO = #{param2}
+    </update>
+    
+    <!-- 본인이 올린 상품 삭제 -->
+    <delete id="ProductDelete">
+    	DELETE 
+    	FROM PRODUCT
+    	WHERE P_NO = #{p_No}
+    </delete>
+	
+	<!-- 판매 상품 수정하기 -->
+   <update id="ProductUpdate">
+      UPDATE PRODUCT
+      SET P_NAME = #{param2}, P_CARTEGORY = #{param3}, P_CONTENT = #{param4}, P_PRICE = #{param5}, P_IMG_PATH = #{param6}
+      WHERE P_NO = #{param1}
+   </update>
+   
+</mapper>
